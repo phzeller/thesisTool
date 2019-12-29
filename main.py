@@ -18,6 +18,7 @@ def main():
     print("No. of DMCA notices: " + str(conf.no_of_notices))
     print("time elapsed: {:.2f}s".format(time.time() - start_time))
 
+    print("TEST GIT")
 
 if __name__ == '__main__':
     main()
