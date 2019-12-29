@@ -1,13 +1,14 @@
 import numpy as np
 import mistune
 import pandas as pd
+#TODO TESTING import
+import sys
 from bs4 import BeautifulSoup
 
 import analyzeData
 
 
 class DMCA_notice:
-
     def __init__(self, info_arr):
         if (isinstance(info_arr, np.ndarray)) and info_arr.size == 2:
             self.filePath = info_arr[0]
@@ -27,10 +28,17 @@ class DMCA_notice:
             self.copyright_url = None
             self.github_user = None
 
+    # TODO for testing:
+    def testing(self):
+        print("Einen Treffer gefunden:", self.title, "--> Programm wird beendet")
+        print(self.content.prettify())
+        sys.exit(0)
+
     def markdownToHTML(self):
         with open(self.filePath) as file:
             html_file = mistune.markdown(file.read())
             return html_file
+
 
     def mineData(self):
         # Mining data for required information as mentioned above

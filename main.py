@@ -9,6 +9,7 @@ import conf
 
 
 def main():
+    print("Starting program:")
     start_time = time.time()
 
     conf.createDataframe()

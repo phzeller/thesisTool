@@ -32,18 +32,18 @@ def checkTypeOfNotice(noticeObj):
 
 def getURLs(noticeObj):
     #TODO implement regex expression to get only the repository link no direct links
-    # check if links are not tagged as links
-    # Wie soll mit Counter-Notizen umgegangen werden? -> hier werden natürlich keine URLs geliefert, ggfs manueller Verweis auf die Notiz, auf die sich die counter notiz bezieht
     url_list = noticeObj.content.find_all("a", href=True)
     github_list = []
     copyright_list = []
 
     # print(url_list)
     for url in url_list:
-        if any(github_keyword in url.text for github_keyword in ("https://github.com", "https://gist.github.com")):
-            if url.text not in github_list:    # Eliminate duplicates (however, this can be done faster)
-                github_list.append(url.text)
-        elif "github" not in url.text:
+        # if any(github_keyword in url.text for github_keyword in ("github.com", "https://gist.github.com")):
+        if any(github_keyword in url.text for github_keyword in ("github.com", "githubusercontent.com")):
+            if "help.github.com" not in url.text:
+                if url.text not in github_list:    # Eliminate duplicates (however, this can be done faster)
+                    github_list.append(url.text)
+        else:
             if url.text not in copyright_list:    # Eliminate duplicates (however, this can be done faster)
                 copyright_list.append(url.text)
     if len(github_list) != 0:
