@@ -19,17 +19,17 @@ def processDirectory(directory):
             # write all values to dataframe
             conf.write_to_dataframe(new_notice)
             #TODO TESTING
-            if "2014-12-03-Attributor.md" in new_notice.filePath:
-                new_notice.testing()
-                conf.write_to_csv()
-                sys.exit(0)
+            # if "Jiufu" in new_notice.filePath.lower():
+            #     new_notice.testing()
+            #     conf.write_to_csv()
+            #     sys.exit(0)
 
 
 def checkPath(dir, file):
     # First, check the content of the input directory (if content is file or directory)
 
     # TODO testing purposes
-    # if conf.no_of_notices == 10: return
+    # if conf.no_of_notices == 100: return
 
     if (".git" in file) or ("data" in file) or (".DS_Store" in file):  # Ignore .git and data and .DS_Store folder
         return 0

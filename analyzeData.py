@@ -3,6 +3,7 @@ import re  # use regex to make sure that certain format guidelines are followed
 import bs4
 from bs4 import BeautifulSoup
 
+
 def analyzeTitle(noticeObj):
     # Split fileName to get title, year, month and day
     fileNameSplitted = noticeObj.title.split("-", 3)
@@ -21,34 +22,67 @@ def analyzeTitle(noticeObj):
             noticeObj.day = fileNameSplitted[2]
             noticeObj.header = fileNameSplitted[3]
         else:
-            print("Problem found when splitting fileName -> check name structure YYYY-MM-DD-TITLE.md: ", noticeObj.title)
+            print("Problem found when splitting fileName -> check name structure YYYY-MM-DD-TITLE.md: ",
+                  noticeObj.title)
+
 
 def checkTypeOfNotice(noticeObj):
     fileName = noticeObj.title
     if any(requiredKeyword in fileName.lower() for requiredKeyword in ("counternotice", "counter-notice")):
-        noticeObj.notice = False
+        noticeObj.notice = "counternotice"
+    elif any(requiredKeyword in fileName.lower() for requiredKeyword in ("retraction", "retractions")):
+        noticeObj.notice = "retraction"
+    elif any(requiredKeyword in fileName.lower() for requiredKeyword in ("reversal", "reversals")):
+        noticeObj.notice = "reversal"
     else:
-        noticeObj.notice = True
+        noticeObj.notice = "notice"
+
 
 def getURLs(noticeObj):
-    #TODO implement regex expression to get only the repository link no direct links
+    # TODO Content removed by repository owner search or [User was notified and removed the repository] or [already removed by user]
     url_list = noticeObj.content.find_all("a", href=True)
     github_list = []
-    copyright_list = []
+    other_list = []
 
-    # print(url_list)
     for url in url_list:
-        # if any(github_keyword in url.text for github_keyword in ("github.com", "https://gist.github.com")):
-        if any(github_keyword in url.text for github_keyword in ("github.com", "githubusercontent.com")):
+        if any(github_keyword in url.text.lower() for github_keyword in
+               ("github.com", "githubusercontent.com", "github.io")):
             if "help.github.com" not in url.text:
-                if url.text not in github_list:    # Eliminate duplicates (however, this can be done faster)
+                if url.text not in github_list:  # Eliminate duplicates (however, this can be done faster)
                     github_list.append(url.text)
         else:
-            if url.text not in copyright_list:    # Eliminate duplicates (however, this can be done faster)
-                copyright_list.append(url.text)
+            if url.text not in other_list:    # Eliminate duplicates (however, this can be done faster)
+                other_list.append(url.text)
+
     if len(github_list) != 0:
         noticeObj.github_url = github_list
-    if len(copyright_list) != 0:
-        noticeObj.copyright_url = copyright_list
+    if len(other_list) != 0:
+        noticeObj.other_url = other_list
 
+    if len(github_list) == 0 and len(other_list) == 0:
+        print("Did not find any URLs: ", noticeObj.filePath)
+
+    # Problem: some notices do not include formatted URLs -> therefore, we can not rely on the HTML href tag
+    # Attempt: if no single URL was found, it might be possible, that the format is not correct -> search manual
+
+    # if len(github_list) == 0 and len(other_list) == 0:
+    # if len(github_list) == 0 and noticeObj.notice:
+    # credits for regex: https://urlregex.com/
+    #     raw_list = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', noticeObj.content.get_text())
+    #     print("Liste in raw string gefunden bei: ", noticeObj.filePath)
+    #     print(raw_list)
+    #     for raw_url in raw_list:
+    #         if any(github_raw_keyword in raw_url for github_raw_keyword in ("github.com", "githubusercontent.com")):
+    #             if "help.github.com" not in raw_url:
+    #                 if url.text not in github_list:    # Eliminate duplicates (however, this can be done faster)
+    #                     print("Found correct URL")
+    #                     github_list.append(raw_url)
+    # if any(github_keyword in url.text for github_keyword in ("github.com", "githubusercontent.com")):
+    #     if "help.github.com" not in url.text:
+    #         if url.text not in github_list:  # Eliminate duplicates (however, this can be done faster)
+    #             github_list.append(url.text)
+    # else:
+    #     if url.text not in other_list:  # Eliminate duplicates (however, this can be done faster)
+    #         other_list.append(url.text)
+    # print("Analysierte Liste: ", github_list)
 

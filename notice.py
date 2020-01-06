@@ -22,17 +22,20 @@ class DMCA_notice:
             self.month = None
             self.day = None
             self.header = None
-            self.notice = None  # is notice counter notice or notice? True if notice, False if counter-notice
+            self.notice = "undetermined"
             self.copyright_holder = None
             self.github_url = None
-            self.copyright_url = None
+            self.github_url_count = 0
+            self.other_url = None
+            self.other_url_count = 0
+            self.github_repo = None
             self.github_user = None
 
     # TODO for testing:
     def testing(self):
         print("Einen Treffer gefunden:", self.title, "--> Programm wird beendet")
+        print(self.github_url)
         print(self.content.prettify())
-        sys.exit(0)
 
     def markdownToHTML(self):
         with open(self.filePath) as file:
@@ -43,11 +46,14 @@ class DMCA_notice:
     def mineData(self):
         # Mining data for required information as mentioned above
         analyzeData.analyzeTitle(self)  # This function determines year, month, day and header
-        analyzeData.checkTypeOfNotice(self)   # true if notice, false if counternotice
+        analyzeData.checkTypeOfNotice(self)   # determines if it's notice, counter-notice, retraction or reversal
         analyzeData.getURLs(self)   # this function determines github_url and copyright_url
-
+        if self.github_url is not None:
+            self.github_url_count = len(self.github_url)
+        if self.other_url is not None:
+            self.other_url_count = len(self.other_url)
 
 
     def create_DF_for_mined_data(self):
         # Merge all relevant data into one dataframe
-        self.mined_list = [self.year, self.month, self.day, self.header, self.notice, self.copyright_holder, self.github_url, self.copyright_url, self.github_user]
+        self.mined_list = [self.year, self.month, self.day, self.header, self.notice, self.copyright_holder, self.github_url, self.github_url_count, self.other_url, self.other_url_count, self.github_user]
