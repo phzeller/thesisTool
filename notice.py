@@ -56,4 +56,5 @@ class DMCA_notice:
 
     def create_DF_for_mined_data(self):
         # Merge all relevant data into one dataframe
+        print(type(self.github_url))
         self.mined_list = [self.year, self.month, self.day, self.header, self.notice, self.copyright_holder, self.github_url, self.github_url_count, self.other_url, self.other_url_count, self.github_user]

@@ -19,6 +19,7 @@ def createDataframe():
     header_data = np.array(
         ["year", "month", "day", "header", "notice", "copyright_holder", "github_url", "no_of_github_URLs", "other_urls", "no_of_other_URLs", "github_user"])
     output_df = pd.DataFrame(columns=header_data)
+    output_df.index.name = "notice_id"
 
 
 def write_to_dataframe(noticeObj):
