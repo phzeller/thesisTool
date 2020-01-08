@@ -17,7 +17,7 @@ def createDataframe():
     # Define header of output file
     # TODO: include entire content in order to check duplicates
     header_data = np.array(
-        ["year", "month", "day", "header", "notice", "copyright_holder", "github_url", "no_of_github_URLs", "other_urls", "no_of_other_URLs", "github_user"])
+        ["file_link", "year", "month", "day", "header", "notice", "copyright_holder", "github_url", "no_of_github_URLs", "other_urls", "no_of_other_URLs", "github_user"])
     output_df = pd.DataFrame(columns=header_data)
     output_df.index.name = "notice_id"
 

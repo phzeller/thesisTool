@@ -12,6 +12,7 @@ class DMCA_notice:
     def __init__(self, info_arr):
         if (isinstance(info_arr, np.ndarray)) and info_arr.size == 2:
             self.filePath = info_arr[0]
+            self.file_link = "file://" + self.filePath
             self.title = info_arr[1]
             self.content = BeautifulSoup(self.markdownToHTML(), "lxml")
             # Merge all relevant data into one dataframe
@@ -56,5 +57,4 @@ class DMCA_notice:
 
     def create_DF_for_mined_data(self):
         # Merge all relevant data into one dataframe
-        print(type(self.github_url))
-        self.mined_list = [self.year, self.month, self.day, self.header, self.notice, self.copyright_holder, self.github_url, self.github_url_count, self.other_url, self.other_url_count, self.github_user]
+        self.mined_list = [self.file_link, self.year, self.month, self.day, self.header, self.notice, self.copyright_holder, self.github_url, self.github_url_count, self.other_url, self.other_url_count, self.github_user]

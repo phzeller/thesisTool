@@ -47,11 +47,18 @@ def getURLs(noticeObj):
     for url in url_list:
         if any(github_keyword in url.text.lower() for github_keyword in
                ("github.com", "githubusercontent.com", "github.io")):
-            if "help.github.com" not in url.text:
+            if all(github_keyword_2 not in url.text.lower() for github_keyword_2 in ("help.github.com", "copyright@github.com")):
                 if url.text not in github_list:  # Eliminate duplicates (however, this can be done faster)
-                    github_list.append(url.text)
+                    # Filter out plain github profile URLs, github plain URL (github.com)
+                    regex_profile_url = r"(?:http[s]?://(?:www\.)?github\.com/[\w]+[-]?[\w]*[\/]?$)"
+                    regex_github_url_plain = r"(?:http[s]?://(?:www\.)?github\.com[\/]?$)"
+                    regex_total = r""+regex_profile_url+"|"+regex_github_url_plain
+
+                    result_of_search = re.search(regex_total, url.text, flags=re.IGNORECASE)
+                    if result_of_search is None:
+                        github_list.append(url.text)
         else:
-            if url.text not in other_list:    # Eliminate duplicates (however, this can be done faster)
+            if url.text not in other_list:  # Eliminate duplicates (however, this can be done faster)
                 other_list.append(url.text)
 
     if len(github_list) != 0:
@@ -85,4 +92,3 @@ def getURLs(noticeObj):
     #     if url.text not in other_list:  # Eliminate duplicates (however, this can be done faster)
     #         other_list.append(url.text)
     # print("Analysierte Liste: ", github_list)
-

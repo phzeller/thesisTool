@@ -29,7 +29,7 @@ def checkPath(dir, file):
     # First, check the content of the input directory (if content is file or directory)
 
     # TODO testing purposes
-    # if conf.no_of_notices == 100: return
+    # if conf.no_of_notices == 30: return
 
     if (".git" in file) or ("data" in file) or (".DS_Store" in file):  # Ignore .git and data and .DS_Store folder
         return 0
