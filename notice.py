@@ -32,6 +32,7 @@ class DMCA_notice:
             self.github_repo = None
             self.github_user = None
 
+
     # TODO for testing:
     def testing(self):
         print("Einen Treffer gefunden:", self.title, "--> Programm wird beendet")

@@ -9,6 +9,7 @@ def one_row_each_URL(df):
     testInt = 0
 
     new_df = pd.DataFrame(columns=list(df))
+    # for row in df[990:1000].itertuples(): TODO
     for row in df.itertuples():
 
         # TODO TEST delete testInt and if condition
@@ -41,14 +42,11 @@ def add_profile_link(url):
     regex_github_com = re.search(r"http[s]?://(?:www\.)?(?:gist\.)?github\.com/[\w]+[-]?[\w]*[\/]?", url, flags=re.IGNORECASE)
     regex_github_io = ""
     regex_githubusercontent_com = ""
-
     if regex_github_com is not None:
         # filter out anonymous profiles:
         regex_anonymous_url = re.search(r"(?:/anonymous/)", url, flags=re.IGNORECASE)
         if regex_anonymous_url is not None:
-            print("anonymous URL found: ", url)
             return "anonymous"
-
         # transform https://gist.github.com/"username" into https://github.com/"username"
         github_user_url = regex_github_com.group(0).replace("//gist.", "//")
         return github_user_url
@@ -56,6 +54,15 @@ def add_profile_link(url):
         test = None
     elif "githubusercontent.com" in url:
         test = None
+
+    # filter out private URLs
+    elif "com/[Private" in url:
+        return "private"
+
+    # filter out removed repositories
+    elif "com/[Repository" in url:
+        return "repository removed"
+
     else:
         print("Problem with URL in add_profile_link method: ", url)
 
