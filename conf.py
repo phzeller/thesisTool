@@ -1,5 +1,5 @@
-import pandas as pd  # use pandas data frame as efficient data table
-import numpy as np  # use numpy arrays for better performance
+from csv import writer
+from io import StringIO
 
 #   Configure the DMCA dataset directory below
 ######################################################
@@ -8,24 +8,26 @@ main_directory = "/Users/philippzeller/GitHub/dmca"  #
 
 # Do not touch those variables
 no_of_notices = 0
-output_df = None
-output_fileName = "output.csv"
+output_csv = StringIO()
+output_fileName = "output_final.csv"
+output_file = None
+csv_writer = writer(output_csv)
 
 
-def createDataframe():
-    global output_df
+def create_csv_file():
+    global output_csv
     # Define header of output file
-    # TODO: include entire content in order to check duplicates
-    header_data = np.array(
-        ["file_link", "year", "month", "day", "header", "notice", "copyright_holder", "github_url", "no_of_github_URLs", "other_urls", "no_of_other_URLs", "github_user"])
-    output_df = pd.DataFrame(columns=header_data)
-    output_df.index.name = "notice_id"
+    header_data = ["notice_id", "file_link", "year", "month", "day", "header", "notice", "description", "github_url", "no_of_github_URLs", "other_urls", "no_of_other_URLs", "github_user"]
+
+    csv_writer.writerow(header_data)
+
+def write_to_csv_file(noticeObj):
+    global no_of_notices
+    new_mined_list = noticeObj.mined_list
+    new_mined_list.insert(0, no_of_notices)
+    csv_writer.writerow(new_mined_list)
+    no_of_notices += 1
 
 
-def write_to_dataframe(noticeObj):
-    output_df.loc[len(output_df)] = noticeObj.mined_list
-
-
-def write_to_csv():
-    # save dataframe to .csv ; index = False, sonst wird immer wieder ein neuer Index im output generiert
-    output_df.to_csv(output_fileName)
+def save_csv_file():
+    output_file.write(output_csv.getvalue())
