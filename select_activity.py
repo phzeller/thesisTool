@@ -10,9 +10,19 @@ def create_activity_table(input):
     new_df_csv = StringIO()
     csv_writer = writer(new_df_csv)
     # write header to csv file in memory
-    new_header = list(input)
-    # new_header.insert(0, "index")
+    new_header = [None, "login", "created_at", "date", "no_of_events"]
     csv_writer.writerow(new_header)
+
+    for row in input.itertuples():
+        index = getattr(row, "Index")
+        # TODO: testing
+        if index == 200:
+            break
+
+        print(len(row.activity_data))
+        # Filter out repositories and NA entries
+
+
 
     # for row in df.itertuples():
     #     if row.no_of_github_URLs > 0:
@@ -29,16 +39,14 @@ def create_activity_table(input):
     #                     row.github_url, row.no_of_github_URLs, row.other_urls, row.no_of_other_URLs, row.github_user, None]
     #         csv_writer.writerow(row_data)
     #         indexInt += 1
-    # # new_df_csv.seek(0)
-    # return new_df_csv
+
+    return new_df_csv
 
 def main():
-    print("Starting clean_org_and_NAs.py:")
+    print("Starting select_activity.py:")
     start_time = time.time()
 
-    csv_input = pd.read_csv("activity_data_v2.csv", sep=",", keep_default_na=False, index_col=0,
-                            usecols=lambda col: col not in ["profile_data"])
-
+    csv_input = pd.read_csv("activity_data_v2.csv", sep=",", keep_default_na=False, index_col=0)
 
     with open("profile_data_unique_no_dup_no_org_no_NA.csv", mode="w") as output_file:
         new_df = create_activity_table(csv_input)
