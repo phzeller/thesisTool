@@ -75,7 +75,7 @@ def write_to_csv_file(input_data):
 
 
 def main():
-    print("Starting dataFrameActions.py:")
+    print("Starting gh_data_crawler.py:")
     start_time = time.time()
 
     csv_input = pd.read_csv("new_profile_data_file.csv", sep=",", keep_default_na=False,

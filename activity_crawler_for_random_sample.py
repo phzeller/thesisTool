@@ -20,12 +20,15 @@ def scrape_activity_data(input):
             print("Saved backup file")
 
         # TODO: TESTING
-        # if no_of_added_activities == 2:
-        #     print("Test: No. of checked rows in total: ", index, "while added this amout of rows: ",
+        # if no_of_added_activities == 20:
+        #     print("Test: No. of checked rows in total: ", index, "while added this amount of rows: ",
         #           no_of_added_activities)
         #     return input
 
-        if len(row.activity_data) == 0 and len(row.login) > 0:
+
+            print(index)
+
+        if len(row.activity_data) == 0 and len(row.login) > 0 and len(row.created_at) > 0 and row.login != "error":
             activity_list = []
             split_creation_date = row.created_at.split("-")
             # if no correct date format, leave row untouched
@@ -79,14 +82,14 @@ def determine_years(creation_year):
     return years
 
 def write_to_csv_file(input_data):
-    input_data.to_csv("activity_test.csv")
+    input_data.to_csv("random_sample_activity.csv")
 
 
 def main():
-    print("Starting activity_crawler.py:")
+    print("Starting activity_crawler_for_random_sample.py:")
     start_time = time.time()
 
-    csv_input = pd.read_csv("activity_test.csv", sep=",", keep_default_na=False,
+    csv_input = pd.read_csv("random_sample_activity.csv", sep=",", keep_default_na=False,
                             usecols=["login", "created_at", "activity_data"])
 
     new_csv = scrape_activity_data(csv_input)

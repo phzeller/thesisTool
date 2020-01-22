@@ -42,7 +42,7 @@ def one_row_each_URL(df):
     csv_writer = writer(new_df_csv)
     # write header to csv file in memory
     new_header = list(df)
-    new_header.insert(0, "index")
+    new_header.insert(0, "None")
     csv_writer.writerow(new_header)
 
     indexInt = 0
