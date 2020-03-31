@@ -22,24 +22,6 @@ def create_activity_table(input):
         print(len(row.activity_data))
         # Filter out repositories and NA entries
 
-
-
-    # for row in df.itertuples():
-    #     if row.no_of_github_URLs > 0:
-    #         github_url_converted = literal_eval(row.github_url)
-    #         for url in github_url_converted:
-    #             github_user_profile = add_profile_link(url)
-    #             row_data = [indexInt, row.notice_id, row.file_link, row.year, row.month, row.day, row.header, row.notice, row.description,
-    #                         url, 1, row.other_urls, row.no_of_other_URLs, github_user_profile, None]
-    #             csv_writer.writerow(row_data)
-    #             indexInt += 1
-    #             # new_df.loc[len(new_df)] = row_data
-    #     else:  # leave row untouched if no github URL available
-    #         row_data = [indexInt, row.notice_id, row.file_link, row.year, row.month, row.day, row.header, row.notice, row.description,
-    #                     row.github_url, row.no_of_github_URLs, row.other_urls, row.no_of_other_URLs, row.github_user, None]
-    #         csv_writer.writerow(row_data)
-    #         indexInt += 1
-
     return new_df_csv
 
 def main():

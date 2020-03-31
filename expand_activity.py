@@ -6,7 +6,7 @@ from ast import literal_eval  # datatype list get converted to string in .csv fi
 from csv import writer
 from io import StringIO
 
-# Pro github URL soll nun eine Zeile erstellt werden
+# Pro activity soll nun eine Zeile erstellt werden
 def one_row_each_URL(input_data):
     new_df_csv = StringIO()
     csv_writer = writer(new_df_csv)
@@ -49,10 +49,11 @@ def main():
     print("Starting expand_activity.py:")
     start_time = time.time()
 
-    csv_input = pd.read_csv("activity_test.csv", sep=",", keep_default_na=False,
+    csv_input = pd.read_csv("/Users/philippzeller/Dropbox/Eigener Studienordner/Studium/7. Semester/BA/Backups Python/20_activity_data_v2.csv", sep=",", keep_default_na=False,
                             usecols=["login", "created_at", "activity_data"])
 
-    with open("activity_test_rows.csv", mode="w") as output_file:
+
+    with open("21_activity_data_rows_v2.csv", mode="w") as output_file:
         new_df = one_row_each_URL(csv_input)
         output_file.write(new_df.getvalue())
 
