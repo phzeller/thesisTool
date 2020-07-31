@@ -31,7 +31,7 @@ def get_GHuser_profile_data(input_data):
         if len(row.profile_data) == 0 and len(row.github_user) > 0:
             try:
                 api_url = "https://api.github.com/users/" + row.github_user.split(".com")[1].replace("/", "")
-                gh_profile_data = requests.get(api_url, auth=("phzeller", "f16eface45cf06c457831303f84433efd5f3bcce"))
+                gh_profile_data = requests.get(api_url, auth=())
             except Exception:
                 print(Exception)
                 print("Problem found with User: ", row.github_user)
