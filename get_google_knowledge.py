@@ -36,7 +36,7 @@ def get_google_knowledge_results(input):
 
             # make google knowledge graph API request
 
-            api_key = "AIzaSyB-X6XKLgoL7Spa1ojLBcJYa52YjRGIN8U"
+            api_key = ""
             query = fixed_description
             service_url = 'https://kgsearch.googleapis.com/v1/entities:search'
             params = {
